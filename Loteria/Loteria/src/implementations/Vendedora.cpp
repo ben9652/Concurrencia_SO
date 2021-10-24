@@ -16,7 +16,7 @@ Vendedora::Vendedora(const char* nombre, Fila<Cliente>* clientes)
 	this->estaAtendiendo = false;
 
 	this->cliente_en_atencion = nullptr;
-	this->tiempo_atendiendo_ms = randint(2000000, 7000000);
+	this->tiempo_atendiendo_ms = 0;
 
 	fila_a_presentar = 2;
 	columna_a_presentar = columna_vendedora;
@@ -55,7 +55,7 @@ void Vendedora::Atender()
 	imprimir.join();
 	imprimir = std::thread(printNumber, this->cliente_en_atencion->getID(), NO_FINALIZADA);
 	imprimir.join();
-	imprimir = std::thread(printString, "\"", FINALIZADA);
+	imprimir = std::thread(printString, "\" ", FINALIZADA);
 	imprimir.join();
 
 	this->asignarTiempoAtendido();
@@ -93,6 +93,14 @@ void Vendedora::Vender(Vendedora* vendedora)
 		{
 			if (vendedora->fila_clientes->Size() != 0)
 			{
+				if (strcmp(vendedora->nombre, "A") == 0)
+					esta_A_ocupada = true;
+
+				if (strcmp(vendedora->nombre, "B") == 0 && esta_A_ocupada)
+					caja_A_ocupada.acquire();
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(randint(1000, 1500)));
+
 				std::thread posicionar(gotoxy, vendedora->columna_a_presentar, vendedora->fila_a_presentar);
 				posicionar.join();
 				std::thread imprimir(printString, vendedora->nombre, FINALIZADA);
@@ -102,11 +110,15 @@ void Vendedora::Vender(Vendedora* vendedora)
 				vendedora->cliente_en_atencion = cliente_tentativo;
 				vendedora->estaAtendiendo = true;
 
+				if (strcmp(vendedora->nombre, "A") == 0)
+				{
+					caja_A_ocupada.release();
+					esta_A_ocupada = false;
+				}
+
 				vendedora->Atender();
 
 				vendedora->estaAtendiendo = false;
-
-				std::this_thread::sleep_for(std::chrono::milliseconds(randint(1000, 1500)));
 			}
 		}
 	}

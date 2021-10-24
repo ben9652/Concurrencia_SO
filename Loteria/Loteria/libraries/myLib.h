@@ -7,7 +7,10 @@
 #define FINALIZADA true
 #define NO_FINALIZADA false
 
+static bool esta_A_ocupada = false;
+
 static std::counting_semaphore hayClientes(2);
+static std::binary_semaphore caja_A_ocupada(0);
 static std::binary_semaphore positionLock(1);
 static std::binary_semaphore printLock(1);
 

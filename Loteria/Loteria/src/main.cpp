@@ -56,7 +56,9 @@ static void mostrarClientes(Fila<Cliente>* fila)
 
 			imprimir = std::thread(printString, "Tama\xa4o fila: ", NO_FINALIZADA);
 			imprimir.join();
-			imprimir = std::thread(printNumber, fila->Size(), FINALIZADA);
+			imprimir = std::thread(printNumber, fila->Size(), NO_FINALIZADA);
+			imprimir.join();
+			imprimir = std::thread(printString, "   ", FINALIZADA);
 			imprimir.join();
 
 			posicionar = std::thread(gotoxy, 0, 3);
