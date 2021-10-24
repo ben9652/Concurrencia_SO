@@ -1,4 +1,3 @@
-﻿  myLib.cpp
-  main.cpp
-  Generando código...
-  Loteria.vcxproj -> C:\Users\ben96\Documents\Visual Studio 2019\Projects\Concurrencia_SO\Loteria\Debug\Loteria.exe
+﻿  main.cpp
+main.obj : error LNK2019: símbolo externo _sem_init sin resolver al que se hace referencia en la función _main
+C:\Users\ben96\Documents\Visual Studio 2019\Projects\Conc_SO\Loteria\Debug\Loteria.exe : fatal error LNK1120: 1 externos sin resolver
