@@ -96,6 +96,7 @@ void Vendedora::Vender(Vendedora* vendedora)
 				if (strcmp(vendedora->nombre, "A") == 0)
 					esta_A_ocupada = true;
 
+				// Se bloquea si A y B estaban libres
 				if (strcmp(vendedora->nombre, "B") == 0 && esta_A_ocupada)
 					caja_A_ocupada.acquire();
 
@@ -110,6 +111,7 @@ void Vendedora::Vender(Vendedora* vendedora)
 				vendedora->cliente_en_atencion = cliente_tentativo;
 				vendedora->estaAtendiendo = true;
 
+				// Si A y B estaban libres, y A adquirió ya un cliente, B se desbloquea
 				if (strcmp(vendedora->nombre, "A") == 0)
 				{
 					caja_A_ocupada.release();
